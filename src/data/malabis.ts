@@ -55,7 +55,7 @@ export const malabis: Malabi[] = [
   {
     id: "dulce",
     name: "מלבי ריבת חלב",
-    image: "/images/classic.webp",
+    image: "/images/dulce.webp",
     description: "מתיקות קרמית שלא נגמרת.",
     tagline: "ריבת חלב על מלבי חלק.",
     ingredients: [
@@ -143,7 +143,7 @@ export const malabis: Malabi[] = [
   {
     id: "cheesecake",
     name: "מלבי עוגת גבינה",
-    image: "/images/classic.webp",
+    image: "/images/cheesecake.jpg",
     description: "אלגנטי ומתוחכם.",
     tagline: "פירות יער על בסיס גבינה.",
     ingredients: [
@@ -160,7 +160,7 @@ export const malabis: Malabi[] = [
   {
     id: "sinful",
     name: "מלבי שחיתות",
-    image: "/images/classic.webp",
+    image: "/images/Shitut.webp",
     description: "שחיתות טהורה בכוס.",
     tagline: "נוטלה, מקופלת, עדשים.",
     ingredients: [
@@ -178,7 +178,7 @@ export const malabis: Malabi[] = [
   {
     id: "cinnabon",
     name: "מלבי סינבון",
-    image: "/images/classic.webp",
+    image: "/images/cinnabon.webp",
     description: "סינבון חם בפורמט קר.",
     tagline: "קינמון, סוכר, שוקולד לבן.",
     ingredients: [
@@ -213,7 +213,7 @@ export const malabis: Malabi[] = [
   {
     id: "smores",
     name: "מלבי סמורס",
-    image: "/images/classic.webp",
+    image: "/images/smores.webp",
     description: "חוויית מדורה בכל ביס.",
     tagline: "מרשמלו שרוף על מלבי.",
     ingredients: [
@@ -250,7 +250,7 @@ export const malabis: Malabi[] = [
   {
     id: "dubai-chocolate",
     name: "מלבי שוקולד דובאי",
-    image: "/images/classic.webp",
+    image: "/images/dubai-chocolate.jpg",
     description: "הטרנד הכי חם מדובאי.",
     tagline: "פיסטוק, קדאיף, נוטלה.",
     ingredients: [
@@ -286,7 +286,7 @@ export const malabis: Malabi[] = [
   {
     id: "crunch-munch",
     name: "מלבי קראנצ מאנצ",
-    image: "/images/classic.webp",
+    image: "/images/crunch.jpeg",
     description: "מתוק-מלוח מושלם.",
     tagline: "בייגלה, שקדי מרק, שוקולד לבן.",
     ingredients: [
