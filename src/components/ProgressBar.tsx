@@ -7,51 +7,148 @@ interface ProgressBarProps {
   total: number;
 }
 
-export default function ProgressBar({ current, total }: ProgressBarProps) {
-  const progress = ((current - 1) / (total - 1)) * 100;
+/**
+ * Malabi bowl SVG that fills up as the user progresses through questions.
+ * Real malabi layers: white base, strawberry pink, pistachio green, chocolate.
+ */
+function MalabiBowl({
+  fillLevel,
+  total,
+}: {
+  fillLevel: number;
+  total: number;
+}) {
+  const w = 72;
+  const h = 52;
+
+  const fillTop = 16;
+  const fillBottom = 40;
+  const fillHeight = fillBottom - fillTop;
+  const layerH = fillHeight / total;
+
+  // Real malabi layers: bottom=white cream base, middle=strawberry/rose, top=pistachio green
+  const layerColors = ["#f5f0e8", "#e8a0b0", "#a8c5a0"];
+
+  // Topping colors matching real toppings: chocolate, pistachio, coconut, rose petals
+  const toppingSpecs = [
+    { cx: 24, cy: 17.5, r: 2.2, color: "#6b4226" },   // chocolate
+    { cx: 31, cy: 15.5, r: 1.8, color: "#7da66e" },   // pistachio
+    { cx: 36, cy: 17, r: 1.5, color: "#f0e6d3" },     // coconut
+    { cx: 41, cy: 15.5, r: 1.8, color: "#d4708a" },   // rose
+    { cx: 48, cy: 17.5, r: 2.2, color: "#6b4226" },   // chocolate
+  ];
 
   return (
-    <div className="w-full max-w-xs mx-auto mb-8">
-      {/* Step text */}
-      <p className="text-center text-[11px] tracking-[0.2em] text-[var(--taupe)] mb-3">
-        שאלה {current} מתוך {total}
-      </p>
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="mx-auto"
+    >
+      <defs>
+        <clipPath id="bowl-clip">
+          <ellipse cx="36" cy="38" rx="24" ry="8" />
+          <rect x="12" y="16" width="48" height="22" />
+          <ellipse cx="36" cy="16" rx="28" ry="7" />
+        </clipPath>
+      </defs>
 
-      {/* Bar track */}
-      <div className="relative w-full h-[3px] bg-[var(--sand)] rounded-full overflow-hidden">
-        <motion.div
-          className="absolute inset-y-0 right-0 bg-[var(--gold)] rounded-full"
-          initial={false}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-        />
-      </div>
-
-      {/* Step dots */}
-      <div className="flex items-center justify-between mt-2">
+      {/* Fill layers */}
+      <g clipPath="url(#bowl-clip)">
         {Array.from({ length: total }, (_, i) => {
-          const stepNum = i + 1;
-          const isActive = stepNum === current;
-          const isDone = stepNum < current;
+          const isFilled = i < fillLevel;
+          const y = fillBottom - (i + 1) * layerH;
 
           return (
-            <motion.div
+            <motion.rect
               key={i}
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors duration-300 ${
-                isActive
-                  ? "bg-[var(--espresso)] text-[var(--cream)]"
-                  : isDone
-                  ? "bg-[var(--gold)] text-white"
-                  : "bg-[var(--sand-light)] text-[var(--taupe)]"
-              }`}
-              animate={{ scale: isActive ? 1.1 : 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              {isDone ? "✓" : stepNum}
-            </motion.div>
+              x="8"
+              y={y}
+              width="56"
+              height={layerH + 1}
+              fill={layerColors[i % layerColors.length]}
+              initial={false}
+              animate={{
+                opacity: isFilled ? 1 : 0,
+                scaleY: isFilled ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+                delay: isFilled ? 0.1 : 0,
+              }}
+              style={{ transformOrigin: `center ${y + layerH}px` }}
+            />
           );
         })}
-      </div>
+      </g>
+
+      {/* Bowl body */}
+      <path
+        d="M8 18 C8 18, 10 42, 18 44 Q36 48, 54 44 C62 42, 64 18, 64 18"
+        stroke="var(--espresso)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+
+      {/* Bowl rim */}
+      <ellipse
+        cx="36"
+        cy="18"
+        rx="28"
+        ry="6"
+        stroke="var(--espresso)"
+        strokeWidth="2"
+        fill="none"
+      />
+
+      {/* Inner rim highlight */}
+      <ellipse
+        cx="36"
+        cy="18"
+        rx="24"
+        ry="4.5"
+        stroke="var(--sand)"
+        strokeWidth="0.8"
+        fill="none"
+        opacity="0.5"
+      />
+
+      {/* Toppings when full */}
+      {fillLevel >= total && (
+        <g>
+          {toppingSpecs.map((t, i) => (
+            <motion.circle
+              key={i}
+              cx={t.cx}
+              cy={t.cy}
+              r={t.r}
+              fill={t.color}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.25 + i * 0.1, duration: 0.3 }}
+            />
+          ))}
+        </g>
+      )}
+    </svg>
+  );
+}
+
+export default function ProgressBar({ current, total }: ProgressBarProps) {
+  const fillLevel = current;
+
+  return (
+    <div className="w-full max-w-xs mx-auto mb-6">
+      <MalabiBowl fillLevel={fillLevel} total={total} />
+
+      <p className="text-center text-[11px] tracking-[0.2em] text-[var(--taupe)] mt-2">
+        שאלה {current} מתוך {total}
+      </p>
     </div>
   );
 }

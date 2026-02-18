@@ -17,11 +17,16 @@
   --gold-muted: #d4c4a8;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--cream);
   min-height: 100dvh;
   font-family: var(--font-assistant), Arial, Helvetica, sans-serif;
   color: var(--espresso);
+  scrollbar-gutter: stable;
 }
 
 /* Custom scrollbar */
@@ -99,46 +104,21 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* Graffiti gradient border — matches spray paint colors */
+/* Graffiti gradient border — real border, always symmetrical */
 .border-graffiti {
   position: relative;
-  border: none;
-}
-.border-graffiti::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 2px;
-  background: linear-gradient(
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: none;
+  border-bottom: none;
+  border-image: linear-gradient(
     to bottom,
     #2a7b7b,
     #7b2d3b,
     #d4a035,
     #6b7b3a,
     #2a7b7b
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-.border-graffiti::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    #2a7b7b,
-    #6b7b3a,
-    #d4a035,
-    #7b2d3b,
-    #2a7b7b
-  );
-  pointer-events: none;
-  z-index: 1;
+  ) 1;
 }
 
 /* Landing background — graffiti splash */

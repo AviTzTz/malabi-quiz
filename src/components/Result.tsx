@@ -139,7 +139,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
 
             <div className="p-6 md:p-8">
               {/* Malabi name in display font */}
-              <h3 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl text-[var(--espresso)] mb-2 leading-tight">
+              <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-2 leading-tight">
                 {primary.name.replace("מלבי", "זה לא מלבי")}
               </h3>
               <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
@@ -192,7 +192,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
                   </div>
 
                   <div className="card-editorial overflow-hidden">
-                    <div className="relative h-36 md:h-44 bg-[var(--cream-light)]">
+                    <div className="relative h-44 md:h-56 bg-[var(--cream-light)]">
                       <Image
                         src={secondary.image}
                         alt={secondary.name.replace("מלבי", "זה לא מלבי")}
@@ -203,14 +203,14 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
                       <div className="absolute inset-x-0 -bottom-1 h-2/3 bg-gradient-to-t from-white via-white/50 to-transparent" />
                     </div>
 
-                    <div className="p-5 md:p-6">
-                      <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-1.5 leading-tight">
+                    <div className="p-6 md:p-8">
+                      <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-2 leading-tight">
                         {secondary.name.replace("מלבי", "זה לא מלבי")}
                       </h3>
                       <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
                         {secondary.tagline}
                       </p>
-                      <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-4">
+                      <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-5">
                         {secondary.description}
                       </p>
                       <IngredientsSection ingredients={secondary.ingredients} />
