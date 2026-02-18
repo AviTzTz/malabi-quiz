@@ -44,18 +44,15 @@ export default function Quiz({ onComplete }: QuizProps) {
   return (
     <div className="h-dvh px-5 md:px-0">
       <div className="max-w-lg w-full h-full mx-auto flex flex-col border-graffiti bg-[var(--cream)]/60 backdrop-blur-sm px-5 py-6 md:px-8 md:py-10">
-        {/* Minimal header with logo */}
-        <div className="flex items-center justify-center gap-2 mb-2">
+        {/* Header logo */}
+        <div className="flex justify-center mb-2">
           <Image
             src="/images/logo.png"
             alt="Friends"
             width={120}
             height={51}
-            className="h-auto w-[90px] md:w-[110px]"
+            className="h-auto w-[140px] md:w-[180px] mx-auto"
           />
-          <span className="text-[10px] tracking-[0.35em] uppercase text-[var(--taupe)]">
-            · חידון טעם
-          </span>
         </div>
 
         {/* Progress */}

@@ -7,7 +7,7 @@ interface LoadingProps {
   onDone: () => void;
 }
 
-const messages = ["מנתחים טעמים...", "מחפשים התאמה...", "כמעט שם."];
+const messages = ["🎵 I'll be there for you...", "מחפשים את הלא מלבי שלך..."];
 
 export default function Loading({ onDone }: LoadingProps) {
   const [messageIndex, setMessageIndex] = useState(0);
@@ -18,7 +18,7 @@ export default function Loading({ onDone }: LoadingProps) {
         if (prev < messages.length - 1) return prev + 1;
         return prev;
       });
-    }, 900);
+    }, 1200);
 
     const timer = setTimeout(onDone, 2800);
     return () => {

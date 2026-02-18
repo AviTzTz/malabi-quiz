@@ -18,49 +18,50 @@ const modes: { id: LandingMode; label: string; sub: string }[] = [
 export default function Landing({ onStart }: LandingProps) {
   return (
     <div className="h-dvh px-5 md:px-0">
-      <div className="max-w-lg w-full h-full mx-auto flex flex-col items-center justify-center gap-8 border-graffiti bg-[var(--cream)]/60 backdrop-blur-sm py-10 px-6 text-center">
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <Image
-            src="/images/logo.png"
-            alt="Friends"
-            width={280}
-            height={120}
-            className="h-auto w-[180px] md:w-[240px] mx-auto"
-            priority
-          />
-        </motion.div>
+      <div className="max-w-lg w-full h-full mx-auto flex flex-col items-center justify-between border-graffiti bg-[var(--cream)]/60 backdrop-blur-sm py-8 px-6 text-center">
+        {/* Top: Logo + story */}
+        <div className="flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <Image
+              src="/images/logo.png"
+              alt="Friends"
+              width={280}
+              height={120}
+              className="h-auto w-[140px] md:w-[180px] mx-auto"
+              priority
+            />
+          </motion.div>
 
-        {/* Funny intro story */}
-        <motion.p
-          className="text-sm text-[var(--espresso-light)] leading-relaxed max-w-xs"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-        >
-          &ldquo;מה זה לא מאלבי??&rdquo; ... &ldquo;זה לא מאלבי.&rdquo;
-          <br />
-          &ldquo;אהה רגע מה?? זה לא מאלבי??&rdquo; 🤔
-          <br />
-          <span className="text-[var(--espresso)] font-semibold">נו אז מה כן? בואו תגלו.</span>
-        </motion.p>
+          <motion.p
+            className="text-sm text-[var(--espresso-light)] leading-relaxed max-w-xs mt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            &ldquo;מה זה לא מאלבי??&rdquo; ... &ldquo;זה לא מאלבי.&rdquo;
+            <br />
+            &ldquo;אהה רגע מה?? זה לא מאלבי??&rdquo; 🤔
+            <br />
+            <span className="text-[var(--espresso)] font-semibold">נו אז מה כן? בואו תגלו.</span>
+          </motion.p>
+        </div>
 
-        {/* CTA card */}
-        <motion.div
-          className="px-6 py-2 md:px-10 md:py-4 w-full"
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-        >
-          <h2 className="font-[family-name:var(--font-display)] text-xl md:text-2xl font-bold text-[var(--espresso)] mb-5 leading-snug">
+        {/* Bottom half: heading, buttons, icons, address — evenly spaced */}
+        <div className="flex-1 flex flex-col items-center justify-evenly w-full">
+          <motion.h2
+            className="font-[family-name:var(--font-display)] text-xl md:text-2xl font-bold text-[var(--espresso)] leading-snug"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
             אז מה הלא מלבי שלך?
-          </h2>
+          </motion.h2>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full px-6 md:px-10">
             {modes.map((mode, i) => (
               <motion.button
                 key={mode.id}
@@ -80,10 +81,8 @@ export default function Landing({ onStart }: LandingProps) {
               </motion.button>
             ))}
           </div>
-        </motion.div>
 
-        {/* Social + branding — pushed to bottom */}
-        <div className="mt-auto flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3">
           <motion.div
             className="flex items-center gap-4"
             initial={{ opacity: 0 }}
@@ -122,6 +121,7 @@ export default function Landing({ onStart }: LandingProps) {
           >
             רחוב מצדה 17 | 053-453-2277
           </motion.p>
+          </div>
         </div>
       </div>
     </div>
