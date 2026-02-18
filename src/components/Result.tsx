@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import confetti from "canvas-confetti";
 import type { Malabi } from "@/data/malabis";
 import type { LandingMode } from "./Landing";
-
 
 interface ResultProps {
   results: Malabi[];
@@ -14,86 +13,39 @@ interface ResultProps {
   onRestart: () => void;
 }
 
-function MalabiCard({
-  malabi,
-  rank,
-  delay,
-}: {
-  malabi: Malabi;
-  rank: 1 | 2;
-  delay: number;
-}) {
-  const isPrimary = rank === 1;
-
+function IngredientsSection({ ingredients }: { ingredients: string[] }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className="w-full"
-    >
-      {/* Rank label */}
+    <div className="bg-[var(--cream-light)] border border-[var(--sand-light)] p-5 relative overflow-hidden">
+      {/* Decorative top line */}
+      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-l from-transparent via-[var(--gold)] to-transparent" />
+
+      {/* Header */}
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-[10px] tracking-[0.3em] uppercase text-[var(--taupe)]">
-          {isPrimary ? "ההמלצה העיקרית" : "שווה גם לנסות"}
+        <span className="text-[var(--gold)] text-lg leading-none">&#9753;</span>
+        <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--taupe-dark)]">
+          מה בפנים
         </span>
         <div className="flex-1 h-px bg-[var(--sand)]" />
       </div>
 
-      {/* Card */}
-      <div className="card-editorial overflow-hidden">
-        {/* Image */}
-        <div className="relative h-40 md:h-52 bg-[var(--cream-light)]">
-          <Image
-            src={malabi.image}
-            alt={malabi.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 448px"
-            priority={isPrimary}
-          />
-          {/* Fade-out into card background */}
-          <div className="absolute inset-x-0 -bottom-1 h-2/3 bg-gradient-to-t from-white via-white/50 to-transparent" />
-        </div>
-
-        {/* Content */}
-        <div className={isPrimary ? "p-6 md:p-8" : "p-5 md:p-6"}>
-          <h3
-            className={`font-bold text-[var(--espresso)] mb-1.5 ${
-              isPrimary ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
-            }`}
-          >
-            {malabi.name.replace("מלבי", "זה לא מלבי")}
-          </h3>
-
-          <p className="text-sm text-[var(--gold)] font-medium mb-3">
-            {malabi.tagline}
-          </p>
-
-          <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-5">
-            {malabi.description}
-          </p>
-
-          {/* Ingredients */}
-          <div className="card-warm p-4">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[var(--taupe)] mb-3">
-              מה בפנים
-            </p>
-            <ul className="space-y-1.5">
-              {malabi.ingredients.map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2.5 text-sm text-[var(--espresso-light)]"
-                >
-                  <span className="w-1 h-1 rounded-full bg-[var(--gold)] mt-2 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+      {/* Numbered steps */}
+      <div className="space-y-0">
+        {ingredients.map((item, i) => (
+          <div key={i} className="flex items-center gap-3">
+            {/* Step number */}
+            <span className="w-6 h-6 rounded-full bg-[var(--espresso)] text-[var(--cream)] text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+              {i + 1}
+            </span>
+            {/* Text */}
+            <div className={`flex-1 py-2.5 text-[13px] text-[var(--espresso-light)] leading-snug ${
+              i < ingredients.length - 1 ? "border-b border-[var(--sand)]" : ""
+            }`}>
+              {item}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -108,6 +60,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
   const isSingle = results.length === 1;
   const primary = results[0];
   const secondary = results[1] ?? null;
+  const [showSecondary, setShowSecondary] = useState(false);
 
   useEffect(() => {
     if (confettiFired.current) return;
@@ -157,7 +110,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
           />
         </motion.div>
 
-        {/* Primary — with custom label per mode */}
+        {/* Primary result */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -172,7 +125,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
           </div>
 
           <div className="card-editorial overflow-hidden">
-            <div className="relative h-40 md:h-52 bg-[var(--cream-light)]">
+            <div className="relative h-44 md:h-56 bg-[var(--cream-light)]">
               <Image
                 src={primary.image}
                 alt={primary.name.replace("מלבי", "זה לא מלבי")}
@@ -185,53 +138,88 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
             </div>
 
             <div className="p-6 md:p-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-[var(--espresso)] mb-1.5">
+              {/* Malabi name in display font */}
+              <h3 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl text-[var(--espresso)] mb-2 leading-tight">
                 {primary.name.replace("מלבי", "זה לא מלבי")}
               </h3>
-              <p className="text-sm text-[var(--gold)] font-medium mb-3">
+              <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
                 {primary.tagline}
               </p>
               <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-5">
                 {primary.description}
               </p>
-              <div className="card-warm p-4">
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[var(--taupe)] mb-3">
-                  מה בפנים
-                </p>
-                <ul className="space-y-1.5">
-                  {primary.ingredients.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2.5 text-sm text-[var(--espresso-light)]"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-[var(--gold)] mt-2 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <IngredientsSection ingredients={primary.ingredients} />
             </div>
           </div>
         </motion.div>
 
-        {/* Secondary — only for quiz mode */}
+        {/* Secondary — collapsible reveal */}
         {!isSingle && secondary && (
-          <>
-            <motion.div
-              className="my-5 flex items-center gap-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="flex-1 h-px bg-[var(--sand)]" />
-              <span className="text-[10px] tracking-[0.2em] uppercase text-[var(--taupe)]">
-                וגם
-              </span>
-              <div className="flex-1 h-px bg-[var(--sand)]" />
-            </motion.div>
+          <motion.div
+            className="mt-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <AnimatePresence>
+              {!showSecondary ? (
+                <motion.button
+                  key="reveal-btn"
+                  onClick={() => setShowSecondary(true)}
+                  className="w-full py-3.5 px-5 border border-[var(--sand)] text-[var(--espresso)] cursor-pointer transition-all duration-300 hover:border-[var(--gold)] hover:bg-white/50 group"
+                  whileTap={{ scale: 0.98 }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  <span className="text-[13px] font-semibold">
+                    יש לנו עוד המלצה בשבילך
+                  </span>
+                  <span className="block text-[11px] text-[var(--taupe)] mt-0.5">
+                    לחצו לגלות
+                  </span>
+                </motion.button>
+              ) : (
+                <motion.div
+                  key="secondary-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-[var(--taupe)]">
+                      שווה גם לנסות
+                    </span>
+                    <div className="flex-1 h-px bg-[var(--sand)]" />
+                  </div>
 
-            <MalabiCard malabi={secondary} rank={2} delay={0.5} />
-          </>
+                  <div className="card-editorial overflow-hidden">
+                    <div className="relative h-36 md:h-44 bg-[var(--cream-light)]">
+                      <Image
+                        src={secondary.image}
+                        alt={secondary.name.replace("מלבי", "זה לא מלבי")}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 448px"
+                      />
+                      <div className="absolute inset-x-0 -bottom-1 h-2/3 bg-gradient-to-t from-white via-white/50 to-transparent" />
+                    </div>
+
+                    <div className="p-5 md:p-6">
+                      <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-1.5 leading-tight">
+                        {secondary.name.replace("מלבי", "זה לא מלבי")}
+                      </h3>
+                      <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
+                        {secondary.tagline}
+                      </p>
+                      <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-4">
+                        {secondary.description}
+                      </p>
+                      <IngredientsSection ingredients={secondary.ingredients} />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         )}
 
         {/* Retry + Share section */}

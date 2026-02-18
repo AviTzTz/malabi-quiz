@@ -66,12 +66,14 @@ Returns top 2 results for quiz mode, 1 for fate/daily modes.
 - Social icons: taupe color → brand color on hover (WhatsApp green, Facebook blue)
 - Phone: 053-453-2277 | Address: רחוב מצדה 17
 
+## Last Stable Commit
+`465f556` — all 16 malabis with real images, "זה לא מלבי" prefix on results.
+To revert to this point: `git reset --hard 465f556`
+
 ## Known Issues / TODOs
-- 7 malabis still use `classic.webp` fallback (need dedicated images)
 - Facebook link is placeholder (`https://facebook.com/friends`)
 - ShareButtons.tsx component is unused (replaced by inline icons in Result.tsx)
 - Landing page button centering needs fine-tuning on mobile
-- `_write-script.js` and `generate-placeholders.js` are dev utilities, not committed
 
 ## Commands
 ```bash

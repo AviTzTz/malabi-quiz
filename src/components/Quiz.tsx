@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { questions } from "@/data/questions";
@@ -15,28 +15,44 @@ export default function Quiz({ onComplete }: QuizProps) {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [direction, setDirection] = useState(1);
+  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const question = questions[currentQ];
   const isFirst = currentQ === 0;
   const isLast = currentQ === questions.length - 1;
-  const hasAnswer = answers[question.id] !== undefined;
+
+  const advanceToNext = useCallback(
+    (updatedAnswers: Record<number, string>) => {
+      if (isLast) {
+        onComplete(updatedAnswers);
+      } else {
+        setDirection(1);
+        setCurrentQ((prev) => prev + 1);
+      }
+    },
+    [isLast, onComplete],
+  );
 
   function handleSelect(answerId: string) {
-    setAnswers((prev) => ({ ...prev, [question.id]: answerId }));
-  }
-
-  function handleNext() {
-    if (!hasAnswer) return;
-    if (isLast) {
-      onComplete(answers);
-    } else {
-      setDirection(1);
-      setCurrentQ((prev) => prev + 1);
+    // Clear any pending auto-advance
+    if (autoAdvanceTimer.current) {
+      clearTimeout(autoAdvanceTimer.current);
     }
+
+    const updatedAnswers = { ...answers, [question.id]: answerId };
+    setAnswers(updatedAnswers);
+
+    // Auto-advance after a short delay
+    autoAdvanceTimer.current = setTimeout(() => {
+      advanceToNext(updatedAnswers);
+    }, 450);
   }
 
   function handleBack() {
     if (isFirst) return;
+    if (autoAdvanceTimer.current) {
+      clearTimeout(autoAdvanceTimer.current);
+    }
     setDirection(-1);
     setCurrentQ((prev) => prev - 1);
   }
@@ -68,7 +84,7 @@ export default function Quiz({ onComplete }: QuizProps) {
           />
         </div>
 
-        {/* Navigation — editorial buttons */}
+        {/* Back button only — auto-advance replaces "next" */}
         <div className="flex gap-3 justify-center mt-8 pb-8">
           {!isFirst && (
             <motion.button
@@ -79,19 +95,6 @@ export default function Quiz({ onComplete }: QuizProps) {
               חזרה
             </motion.button>
           )}
-
-          <motion.button
-            onClick={handleNext}
-            disabled={!hasAnswer}
-            className={`px-10 py-3 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer ${
-              hasAnswer
-                ? "bg-[var(--espresso)] text-[var(--cream)] hover:bg-[var(--gold)] hover:text-[var(--espresso)]"
-                : "bg-[var(--sand)] text-[var(--gold-muted)] cursor-not-allowed"
-            }`}
-            whileTap={hasAnswer ? { scale: 0.98 } : {}}
-          >
-            {isLast ? "גלו את ההמלצות שלי" : "הבא"}
-          </motion.button>
         </div>
       </div>
     </div>

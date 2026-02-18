@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Landing, { type LandingMode } from "@/components/Landing";
 import Quiz from "@/components/Quiz";
 import Loading from "@/components/Loading";
@@ -10,6 +11,12 @@ import { getDailyMalabi } from "@/data/daily";
 import type { Malabi } from "@/data/malabis";
 
 type Screen = "landing" | "quiz" | "loading" | "result";
+
+const screenVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
 
 export default function Home() {
   const [screen, setScreen] = useState<Screen>("landing");
@@ -52,12 +59,60 @@ export default function Home() {
       <div className="fixed inset-0 z-0 bg-graffiti" />
 
       <div className="relative z-10 flex-1 flex flex-col">
-        {screen === "landing" && <Landing onStart={handleStart} />}
-        {screen === "quiz" && <Quiz onComplete={handleQuizComplete} />}
-        {screen === "loading" && <Loading onDone={handleLoadingDone} />}
-        {screen === "result" && results.length > 0 && (
-          <Result results={results} mode={resultMode} onRestart={handleRestart} />
-        )}
+        <AnimatePresence mode="wait">
+          {screen === "landing" && (
+            <motion.div
+              key="landing"
+              variants={screenVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex-1 flex flex-col"
+            >
+              <Landing onStart={handleStart} />
+            </motion.div>
+          )}
+          {screen === "quiz" && (
+            <motion.div
+              key="quiz"
+              variants={screenVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex-1 flex flex-col"
+            >
+              <Quiz onComplete={handleQuizComplete} />
+            </motion.div>
+          )}
+          {screen === "loading" && (
+            <motion.div
+              key="loading"
+              variants={screenVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex-1 flex flex-col"
+            >
+              <Loading onDone={handleLoadingDone} />
+            </motion.div>
+          )}
+          {screen === "result" && results.length > 0 && (
+            <motion.div
+              key="result"
+              variants={screenVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex-1 flex flex-col"
+            >
+              <Result results={results} mode={resultMode} onRestart={handleRestart} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </main>
   );

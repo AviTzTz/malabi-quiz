@@ -8,44 +8,47 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ current, total }: ProgressBarProps) {
+  const progress = ((current - 1) / (total - 1)) * 100;
+
   return (
-    <div className="w-full max-w-lg mx-auto mb-10">
-      {/* Step indicators — editorial dots */}
-      <div className="flex items-center justify-center gap-3">
+    <div className="w-full max-w-xs mx-auto mb-8">
+      {/* Step text */}
+      <p className="text-center text-[11px] tracking-[0.2em] text-[var(--taupe)] mb-3">
+        שאלה {current} מתוך {total}
+      </p>
+
+      {/* Bar track */}
+      <div className="relative w-full h-[3px] bg-[var(--sand)] rounded-full overflow-hidden">
+        <motion.div
+          className="absolute inset-y-0 right-0 bg-[var(--gold)] rounded-full"
+          initial={false}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        />
+      </div>
+
+      {/* Step dots */}
+      <div className="flex items-center justify-between mt-2">
         {Array.from({ length: total }, (_, i) => {
           const stepNum = i + 1;
           const isActive = stepNum === current;
           const isDone = stepNum < current;
 
           return (
-            <div key={i} className="flex items-center gap-3">
-              {i > 0 && (
-                <div
-                  className="w-8 h-px transition-colors duration-300"
-                  style={{
-                    background: isDone ? "var(--gold)" : "var(--sand)",
-                  }}
-                />
-              )}
-              <motion.div
-                className="flex items-center justify-center transition-all duration-300"
-                animate={{
-                  scale: isActive ? 1 : 0.85,
-                }}
-              >
-                <span
-                  className={`step-number text-xs font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "text-[var(--espresso)]"
-                      : isDone
-                      ? "text-[var(--gold)]"
-                      : "text-[var(--sand)]"
-                  }`}
-                >
-                  {String(stepNum).padStart(2, "0")}
-                </span>
-              </motion.div>
-            </div>
+            <motion.div
+              key={i}
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors duration-300 ${
+                isActive
+                  ? "bg-[var(--espresso)] text-[var(--cream)]"
+                  : isDone
+                  ? "bg-[var(--gold)] text-white"
+                  : "bg-[var(--sand-light)] text-[var(--taupe)]"
+              }`}
+              animate={{ scale: isActive ? 1.1 : 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {isDone ? "✓" : stepNum}
+            </motion.div>
           );
         })}
       </div>

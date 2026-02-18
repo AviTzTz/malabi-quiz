@@ -61,18 +61,19 @@ export default function Landing({ onStart }: LandingProps) {
             אז מה הלא מלבי שלך?
           </motion.h2>
 
-          <div className="flex flex-col gap-2 w-full px-6 md:px-10">
+          <div className="flex flex-col gap-3 w-full px-4 md:px-8">
             {modes.map((mode, i) => (
               <motion.button
                 key={mode.id}
                 onClick={() => onStart(mode.id)}
-                className="w-full py-1.5 px-4 text-[var(--espresso)] border border-[var(--espresso)] cursor-pointer transition-all duration-300 hover:bg-[var(--espresso)] hover:text-[var(--cream)] group"
-                whileTap={{ scale: 0.98 }}
+                className="w-full py-3 px-5 text-[var(--espresso)] border border-[var(--espresso)]/80 cursor-pointer transition-all duration-300 hover:bg-[var(--espresso)] hover:text-[var(--cream)] hover:border-[var(--espresso)] hover:shadow-lg group"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 + i * 0.15, duration: 0.4 }}
               >
-                <span className="text-sm font-semibold tracking-wide">
+                <span className="text-[15px] font-bold tracking-wide">
                   {mode.label}
                 </span>
                 <span className="block text-[11px] text-[var(--taupe)] group-hover:text-[var(--cream)]/70 mt-0.5">

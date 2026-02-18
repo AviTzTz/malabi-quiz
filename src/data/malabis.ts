@@ -286,7 +286,7 @@ export const malabis: Malabi[] = [
   {
     id: "crunch-munch",
     name: "מלבי קראנצ מאנצ",
-    image: "/images/crunch.jpeg",
+    image: "/images/crunch.webp",
     description: "מתוק-מלוח מושלם.",
     tagline: "בייגלה, שקדי מרק, שוקולד לבן.",
     ingredients: [
