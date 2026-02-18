@@ -106,7 +106,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
             alt="Friends"
             width={260}
             height={110}
-            className="h-auto w-[140px] md:w-[180px] mx-auto"
+            className="h-auto w-[220px] md:w-[260px] mx-auto"
           />
         </motion.div>
 
@@ -124,32 +124,34 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
             <div className="flex-1 h-px bg-[var(--sand)]" />
           </div>
 
-          <div className="card-editorial overflow-hidden">
-            <div className="relative h-44 md:h-56 bg-[var(--cream-light)]">
+          {/* Full-width card with image + content */}
+          <div className="card-editorial -mx-4 md:-mx-6 overflow-hidden">
+            {/* Image with fade */}
+            <div className="relative h-52 md:h-64 bg-[var(--cream-light)]">
               <Image
                 src={primary.image}
                 alt={primary.name.replace("מלבי", "זה לא מלבי")}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 448px"
+                sizes="(max-width: 768px) 100vw, 512px"
                 priority
               />
               <div className="absolute inset-x-0 -bottom-1 h-2/3 bg-gradient-to-t from-white via-white/50 to-transparent" />
             </div>
 
+            {/* Content */}
             <div className="p-6 md:p-8">
-              {/* Malabi name in display font */}
-              <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-2 leading-tight">
-                {primary.name.replace("מלבי", "זה לא מלבי")}
-              </h3>
-              <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
-                {primary.tagline}
-              </p>
-              <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-5">
-                {primary.description}
-              </p>
-              <IngredientsSection ingredients={primary.ingredients} />
-            </div>
+            <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[var(--espresso)] mb-2 leading-tight">
+              {primary.name.replace("מלבי", "זה לא מלבי")}
+            </h3>
+            <p className="text-sm text-[var(--gold)] font-semibold italic mb-3">
+              {primary.tagline}
+            </p>
+            <p className="text-sm text-[var(--taupe-dark)] leading-relaxed mb-5">
+              {primary.description}
+            </p>
+            <IngredientsSection ingredients={primary.ingredients} />
+          </div>
           </div>
         </motion.div>
 
@@ -191,14 +193,14 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
                     <div className="flex-1 h-px bg-[var(--sand)]" />
                   </div>
 
-                  <div className="card-editorial overflow-hidden">
-                    <div className="relative h-44 md:h-56 bg-[var(--cream-light)]">
+                  <div className="card-editorial -mx-4 md:-mx-6 overflow-hidden">
+                    <div className="relative h-52 md:h-64 bg-[var(--cream-light)]">
                       <Image
                         src={secondary.image}
                         alt={secondary.name.replace("מלבי", "זה לא מלבי")}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 448px"
+                        sizes="(max-width: 768px) 100vw, 512px"
                       />
                       <div className="absolute inset-x-0 -bottom-1 h-2/3 bg-gradient-to-t from-white via-white/50 to-transparent" />
                     </div>
