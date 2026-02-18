@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-assistant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --cream: #f6f1ea;
+  --cream-light: #faf7f2;
+  --sand: #e8dfd2;
+  --sand-light: #f0ebe3;
+  --taupe: #a69882;
+  --taupe-dark: #8a7d6b;
+  --espresso: #3a2f25;
+  --espresso-light: #5a4d3f;
+  --gold: #c4aa7d;
+  --gold-muted: #d4c4a8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  min-height: 100dvh;
+  font-family: var(--font-assistant), Arial, Helvetica, sans-serif;
+  color: var(--espresso);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-muted);
+  border-radius: 2px;
+}
+
+/* Editorial card — clean, no shadow, thin border */
+.card-editorial {
+  background: #fff;
+  border: 1px solid var(--sand);
+}
+
+/* Warm inset card */
+.card-warm {
+  background: var(--cream-light);
+  border: 1px solid var(--sand-light);
+}
+
+/* Thin decorative line */
+.line-accent {
+  height: 1px;
+  background: linear-gradient(
+    to left,
+    transparent,
+    var(--gold-muted) 20%,
+    var(--gold-muted) 80%,
+    transparent
+  );
+}
+
+/* Subtle noise texture overlay */
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Answer option — editorial style */
+.answer-option {
+  background: #fff;
+  border: 1px solid var(--sand);
+  transition: all 0.2s ease;
+}
+.answer-option:hover {
+  border-color: var(--gold);
+  background: var(--cream-light);
+}
+.answer-option-selected {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: var(--cream);
+}
+
+/* Number marker for quiz steps */
+.step-number {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+/* Graffiti gradient border — matches spray paint colors */
+.border-graffiti {
+  position: relative;
+  border: none;
+}
+.border-graffiti::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    #2a7b7b,
+    #7b2d3b,
+    #d4a035,
+    #6b7b3a,
+    #2a7b7b
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.border-graffiti::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    #2a7b7b,
+    #6b7b3a,
+    #d4a035,
+    #7b2d3b,
+    #2a7b7b
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Landing background — graffiti splash */
+/* Mobile: stretch to fill viewport so all splashes are visible */
+.bg-graffiti {
+  background-image: url("/images/bg-graffiti-mobile.webp");
+  background-color: var(--cream);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+/* Desktop: horizontal 16:9 image */
+@media (min-width: 768px) {
+  .bg-graffiti {
+    background-image: url("/images/bg-graffiti.webp");
+    background-size: cover;
+  }
 }
