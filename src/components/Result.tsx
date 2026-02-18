@@ -63,7 +63,7 @@ function MalabiCard({
               isPrimary ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
             }`}
           >
-            {malabi.name}
+            {malabi.name.replace("מלבי", "זה לא מלבי")}
           </h3>
 
           <p className="text-sm text-[var(--gold)] font-medium mb-3">
@@ -175,7 +175,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
             <div className="relative h-40 md:h-52 bg-[var(--cream-light)]">
               <Image
                 src={primary.image}
-                alt={primary.name}
+                alt={primary.name.replace("מלבי", "זה לא מלבי")}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 448px"
@@ -186,7 +186,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
 
             <div className="p-6 md:p-8">
               <h3 className="text-2xl md:text-3xl font-bold text-[var(--espresso)] mb-1.5">
-                {primary.name}
+                {primary.name.replace("מלבי", "זה לא מלבי")}
               </h3>
               <p className="text-sm text-[var(--gold)] font-medium mb-3">
                 {primary.tagline}
@@ -263,8 +263,8 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(
                   secondary
-                    ? `בחידון הטעם של Friends יצא לי ${primary.name} ו${secondary.name}! בואו לגלות מה אתם`
-                    : `בחידון הטעם של Friends יצא לי ${primary.name}! בואו לגלות מה אתם`
+                    ? `בחידון הטעם של Friends יצא לי ${primary.name.replace("מלבי", "זה לא מלבי")} ו${secondary.name.replace("מלבי", "זה לא מלבי")}! בואו לגלות מה אתם`
+                    : `בחידון הטעם של Friends יצא לי ${primary.name.replace("מלבי", "זה לא מלבי")}! בואו לגלות מה אתם`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
