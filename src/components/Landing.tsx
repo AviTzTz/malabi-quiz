@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { LOGO_CLASS } from "@/lib/constants";
 
 export type LandingMode = "quiz" | "fate" | "daily";
 
@@ -31,7 +32,7 @@ export default function Landing({ onStart }: LandingProps) {
               alt="Friends"
               width={280}
               height={120}
-              className="h-auto w-[140px] md:w-[180px] mx-auto"
+              className={LOGO_CLASS}
               priority
             />
           </motion.div>

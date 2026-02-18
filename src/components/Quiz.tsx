@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { LOGO_CLASS } from "@/lib/constants";
 import { questions } from "@/data/questions";
 import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
@@ -67,7 +68,7 @@ export default function Quiz({ onComplete }: QuizProps) {
             alt="Friends"
             width={120}
             height={51}
-            className="h-auto w-[140px] md:w-[180px] mx-auto"
+            className={LOGO_CLASS}
           />
         </div>
 

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import confetti from "canvas-confetti";
 import type { Malabi } from "@/data/malabis";
 import type { LandingMode } from "./Landing";
+import { LOGO_CLASS } from "@/lib/constants";
 
 interface ResultProps {
   results: Malabi[];
@@ -56,45 +56,15 @@ const modeLabels: Record<LandingMode, string> = {
 };
 
 export default function Result({ results, mode, onRestart }: ResultProps) {
-  const confettiFired = useRef(false);
   const isSingle = results.length === 1;
   const primary = results[0];
   const secondary = results[1] ?? null;
   const [showSecondary, setShowSecondary] = useState(false);
 
-  useEffect(() => {
-    if (confettiFired.current) return;
-    confettiFired.current = true;
-
-    const duration = 1200;
-    const end = Date.now() + duration;
-
-    const frame = () => {
-      confetti({
-        particleCount: 2,
-        angle: 60,
-        spread: 40,
-        origin: { x: 0, y: 0.5 },
-        colors: ["#c4aa7d", "#3a2f25", "#e8dfd2", "#f6f1ea"],
-      });
-      confetti({
-        particleCount: 2,
-        angle: 120,
-        spread: 40,
-        origin: { x: 1, y: 0.5 },
-        colors: ["#c4aa7d", "#3a2f25", "#e8dfd2", "#f6f1ea"],
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    };
-    frame();
-  }, []);
 
   return (
     <div className="min-h-dvh px-5 md:px-0 py-0">
-      <div className="max-w-lg w-full min-h-dvh mx-auto flex flex-col border-graffiti bg-[var(--cream)]/60 backdrop-blur-sm px-4 py-6 md:px-6 md:py-8">
+      <div className="max-w-lg w-full min-h-dvh mx-auto flex flex-col border-graffiti bg-[var(--cream)] px-4 py-6 md:px-6 md:py-8">
         {/* Header — logo */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -106,7 +76,7 @@ export default function Result({ results, mode, onRestart }: ResultProps) {
             alt="Friends"
             width={260}
             height={110}
-            className="h-auto w-[220px] md:w-[260px] mx-auto"
+            className={LOGO_CLASS}
           />
         </motion.div>
 
