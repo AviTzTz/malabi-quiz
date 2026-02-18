@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface ProgressBarProps {
@@ -7,9 +8,38 @@ interface ProgressBarProps {
   total: number;
 }
 
+/** Color palettes for malabi bowl — randomly picked each quiz session */
+const LAYER_PALETTES = [
+  ["#f5f0e8", "#e8a0b0", "#a8c5a0"],  // classic: cream, strawberry, pistachio
+  ["#f5f0e8", "#c9a87c", "#e8a0b0"],  // biscoff: cream, caramel, strawberry
+  ["#f5f0e8", "#a8c5a0", "#d4708a"],  // garden: cream, pistachio, rose
+  ["#f5f0e8", "#b8937a", "#f0e6d3"],  // chocolate: cream, cocoa, coconut
+  ["#f5f0e8", "#e8c875", "#c9a87c"],  // golden: cream, mango, dulce de leche
+  ["#f5f0e8", "#d4708a", "#c9a87c"],  // sunset: cream, rose, caramel
+];
+
+const TOPPING_PALETTES = [
+  // classic: chocolate, pistachio, coconut, rose, chocolate
+  [{ color: "#6b4226" }, { color: "#7da66e" }, { color: "#f0e6d3" }, { color: "#d4708a" }, { color: "#6b4226" }],
+  // nutty: pistachio, almond, hazelnut, pistachio, coconut
+  [{ color: "#7da66e" }, { color: "#d4b896" }, { color: "#8b6914" }, { color: "#7da66e" }, { color: "#f0e6d3" }],
+  // berry: raspberry, strawberry, coconut, blueberry, raspberry
+  [{ color: "#c43b6b" }, { color: "#e8a0b0" }, { color: "#f0e6d3" }, { color: "#6b5b95" }, { color: "#c43b6b" }],
+  // tropical: mango, coconut, passion fruit, kiwi, mango
+  [{ color: "#e8c875" }, { color: "#f0e6d3" }, { color: "#c9785d" }, { color: "#7da66e" }, { color: "#e8c875" }],
+];
+
+const TOPPING_POSITIONS = [
+  { cx: 24, cy: 17.5, r: 2.2 },
+  { cx: 31, cy: 15.5, r: 1.8 },
+  { cx: 36, cy: 17, r: 1.5 },
+  { cx: 41, cy: 15.5, r: 1.8 },
+  { cx: 48, cy: 17.5, r: 2.2 },
+];
+
 /**
  * Malabi bowl SVG that fills up as the user progresses through questions.
- * Real malabi layers: white base, strawberry pink, pistachio green, chocolate.
+ * Colors are randomized each session for variety.
  */
 function MalabiBowl({
   fillLevel,
@@ -26,17 +56,15 @@ function MalabiBowl({
   const fillHeight = fillBottom - fillTop;
   const layerH = fillHeight / total;
 
-  // Real malabi layers: bottom=white cream base, middle=strawberry/rose, top=pistachio green
-  const layerColors = ["#f5f0e8", "#e8a0b0", "#a8c5a0"];
-
-  // Topping colors matching real toppings: chocolate, pistachio, coconut, rose petals
-  const toppingSpecs = [
-    { cx: 24, cy: 17.5, r: 2.2, color: "#6b4226" },   // chocolate
-    { cx: 31, cy: 15.5, r: 1.8, color: "#7da66e" },   // pistachio
-    { cx: 36, cy: 17, r: 1.5, color: "#f0e6d3" },     // coconut
-    { cx: 41, cy: 15.5, r: 1.8, color: "#d4708a" },   // rose
-    { cx: 48, cy: 17.5, r: 2.2, color: "#6b4226" },   // chocolate
-  ];
+  // Pick random palettes once per mount
+  const { layerColors, toppingSpecs } = useMemo(() => {
+    const layers = LAYER_PALETTES[Math.floor(Math.random() * LAYER_PALETTES.length)];
+    const toppings = TOPPING_PALETTES[Math.floor(Math.random() * TOPPING_PALETTES.length)];
+    return {
+      layerColors: layers,
+      toppingSpecs: TOPPING_POSITIONS.map((pos, i) => ({ ...pos, color: toppings[i].color })),
+    };
+  }, []);
 
   return (
     <svg
